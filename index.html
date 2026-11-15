@@ -13,7 +13,6 @@ body{
  margin:0;
  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
  background-color: #fff8f7;
- /* ลายจุด Polka Dot จางๆ บนพื้นหลัง */
  background-image: radial-gradient(#f2cbd8 0.8px, transparent 0.8px), radial-gradient(#f2cbd8 0.8px, #fff8f7 0.8px);
  background-size: 32px 32px;
  background-position: 0 0, 16px 16px;
@@ -171,7 +170,321 @@ h2::after {
  gap:25px;
 }
 
-/* Card Glassmorphism Effect & Glowing Hover */
+/* Horizontal Profile Card Layout */
+.profile-horizontal-container {
+ max-width: 900px;
+ margin: 0 auto;
+ display: flex;
+ flex-direction: column;
+ gap: 30px;
+ padding: 0 15px;
+}
+
+.profile-card-horizontal {
+ background: rgba(255, 255, 255, 0.9);
+ backdrop-filter: blur(5px);
+ border-radius: 24px;
+ padding: 25px;
+ box-shadow: 0 8px 25px rgba(234, 220, 229, 0.6);
+ transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+ border: 2px solid #fff;
+ display: flex;
+ gap: 25px;
+ align-items: flex-start;
+ position: relative;
+ overflow: hidden;
+}
+
+.profile-card-horizontal::before {
+ content: '';
+ position: absolute;
+ top: 0; left: 0; width: 100%; height: 5px;
+ background: linear-gradient(90deg, #f8dce7, #dcecff);
+ opacity: 0;
+ transition: opacity 0.3s ease;
+}
+
+.profile-card-horizontal:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 16px 35px rgba(215, 195, 209, 0.8);
+ border-color: #fce4ec;
+ background: rgba(255, 255, 255, 1);
+}
+
+.profile-card-horizontal:hover::before {
+ opacity: 1;
+}
+
+/* Left Side: Image & Socials */
+.profile-left-col {
+ flex: 0 0 260px;
+ text-align: center;
+}
+
+.profile-img-horiz {
+ width: 100%;
+ border-radius: 16px;
+ object-fit: cover;
+ background: #f8f0f5;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+ transition: transform 0.4s ease;
+ max-height: 330px;
+}
+
+.profile-card-horizontal:hover .profile-img-horiz {
+ transform: scale(1.02);
+}
+
+/* Right Side: Details & Filmography */
+.profile-right-col {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+}
+
+.profile-info-box {
+ font-size: 0.88rem;
+ color: #554b50;
+ line-height: 1.6;
+ background: #fff8f7;
+ padding: 14px;
+ border-radius: 12px;
+ border: 1px dashed #f5d0e0;
+}
+.profile-info-box p {
+ margin: 5px 0;
+}
+
+/* Filmography Item Style (Clickable to Popup) */
+.film-item {
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ margin: 6px 0;
+ background: white;
+ padding: 6px 10px;
+ border-radius: 8px;
+ border: 1px solid #f2e3ed;
+ cursor: pointer;
+ transition: all 0.2s ease;
+}
+.film-item:hover {
+ background: #fce4ec;
+ border-color: #e0b8cb;
+ transform: translateX(3px);
+}
+.film-thumb {
+ width: 38px;
+ height: 38px;
+ border-radius: 6px;
+ object-fit: cover;
+ flex-shrink: 0;
+ background: #f8f0f5;
+}
+.film-text {
+ font-size: 0.8rem;
+ line-height: 1.3;
+}
+
+/* Profile Social Buttons */
+.profile-socials {
+ display: flex;
+ justify-content: center;
+ gap: 8px;
+ margin-top: 12px;
+ flex-wrap: wrap;
+}
+.p-btn {
+ text-decoration: none;
+ font-size: 0.75rem;
+ font-weight: bold;
+ padding: 6px 12px;
+ border-radius: 8px;
+ color: white;
+ transition: opacity 0.2s;
+ box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.p-btn:hover { opacity: 0.85; }
+.btn-ig { background-color: #e1306c; }
+.btn-x { background-color: #000000; }
+.btn-tt { background-color: #25f4ee; color: #000; }
+
+/* Popup Modal Styling */
+.modal-overlay {
+ position: fixed;
+ top: 0; left: 0; width: 100%; height: 100%;
+ background: rgba(0, 0, 0, 0.5);
+ backdrop-filter: blur(5px);
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ z-index: 9999;
+ opacity: 0;
+ pointer-events: none;
+ transition: opacity 0.3s ease;
+ padding: 15px;
+}
+.modal-overlay.active {
+ opacity: 1;
+ pointer-events: auto;
+}
+.modal-content {
+ background: white;
+ width: 100%;
+ max-width: 600px;
+ max-height: 90vh;
+ padding: 25px;
+ border-radius: 24px;
+ box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+ text-align: center;
+ position: relative;
+ transform: translateY(20px);
+ transition: transform 0.3s ease;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ overflow-y: auto;
+}
+.modal-overlay.active .modal-content {
+ transform: translateY(0);
+}
+.modal-close {
+ position: absolute;
+ top: 15px; right: 15px;
+ background: #f2e3ed;
+ border: none;
+ width: 32px; height: 32px;
+ border-radius: 50%;
+ font-size: 1rem;
+ font-weight: bold;
+ color: #75566b;
+ cursor: pointer;
+ transition: background 0.2s;
+ z-index: 10;
+}
+.modal-close:hover {
+ background: #f8dce7;
+}
+.modal-img {
+ width: auto;
+ height: auto;
+ max-width: 100%;
+ max-height: 35vh;
+ border-radius: 12px;
+ object-fit: contain;
+ margin-bottom: 15px;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+ display: block;
+ margin-left: auto;
+ margin-right: auto;
+}
+.modal-title {
+ color: #75566b;
+ font-size: 1.3rem;
+ margin: 0 0 6px 0;
+}
+.modal-role {
+ font-size: 0.95rem;
+ color: #86647c;
+ font-weight: 600;
+ margin-bottom: 12px;
+}
+.modal-desc {
+ font-size: 0.9rem;
+ color: #554b50;
+ line-height: 1.6;
+ background: #fff8f7;
+ padding: 12px;
+ border-radius: 12px;
+ border: 1px dashed #f5d0e0;
+ text-align: left;
+ width: 100%;
+ margin-bottom: 15px;
+}
+
+/* Series Popup specific styling */
+.modal-links-container {
+ width: 100%;
+ text-align: left;
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ margin-top: 5px;
+}
+.modal-subheading {
+ font-size: 0.95rem;
+ font-weight: 600;
+ color: #75566b;
+ margin: 0;
+ border-bottom: 2px solid #f8dce7;
+ padding-bottom: 5px;
+}
+.btn-teaser {
+ display: inline-block;
+ text-decoration: none;
+ background: #ff0000;
+ color: white;
+ padding: 9px 16px;
+ border-radius: 10px;
+ font-weight: 600;
+ font-size: 0.88rem;
+ text-align: center;
+ box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25);
+ transition: all 0.2s ease;
+}
+.btn-teaser:hover {
+ transform: translateY(-2px);
+ opacity: 0.9;
+}
+.episode-list {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ max-height: 200px;
+ overflow-y: auto;
+ padding-right: 4px;
+}
+.ep-item {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ text-decoration: none;
+ background: #fff8f7;
+ border: 1px solid #f2e3ed;
+ padding: 8px 12px;
+ border-radius: 8px;
+ color: #554b50;
+ font-size: 0.85rem;
+ font-weight: 600;
+ transition: all 0.2s ease;
+}
+.ep-item:hover {
+ background: #fce4ec;
+ border-color: #e0b8cb;
+ color: #75566b;
+ transform: translateX(3px);
+}
+
+/* Responsive for Mobile Screens */
+@media (max-width: 768px) {
+ .profile-card-horizontal {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+ }
+ .profile-left-col {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 280px;
+ }
+ .profile-right-col {
+  width: 100%;
+  text-align: left;
+ }
+}
+
+/* Standard Card Glassmorphism Effect & Glowing Hover */
 .card{
  background:rgba(255, 255, 255, 0.9);
  backdrop-filter: blur(5px);
@@ -212,13 +525,13 @@ h2::after {
  transform: scale(1.04);
 }
 
-/* Series Section Custom Styling for Descriptions */
+/* Series Section Custom Styling */
 #couple .cards {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 #couple .card {
     text-align: left;
-    padding: 22px;
+    cursor: pointer;
 }
 .series-desc {
     font-size: 0.9rem;
@@ -230,29 +543,6 @@ h2::after {
     border-radius: 12px;
     border: 1px dashed #f5d0e0;
 }
-
-/* Profile Social Buttons */
-.profile-socials {
- display: flex;
- justify-content: center;
- gap: 8px;
- margin-top: 15px;
- flex-wrap: wrap;
-}
-.p-btn {
- text-decoration: none;
- font-size: 0.75rem;
- font-weight: bold;
- padding: 5px 10px;
- border-radius: 8px;
- color: white;
- transition: opacity 0.2s;
- box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-.p-btn:hover { opacity: 0.85; }
-.btn-ig { background-color: #e1306c; }
-.btn-x { background-color: #000000; }
-.btn-tt { background-color: #25f4ee; color: #000; }
 
 /* Video Container with Glow & Badge */
 .video-wrapper {
@@ -444,13 +734,12 @@ footer{
     <div class="section-badge">✨ Welcome Space</div>
     <h2>Get to know</h2>
     <p style="font-size: 1.15rem; color: #786b72; max-width: 600px; margin: 0 auto;">
-        พื้นที่รวบรวมประวัติ ผลงาน และโมเมนต์สุดประทับใจของ LukeMick 💖
     </p>
 </section>
 
 <!-- Video Section with Badge -->
 <div class="video-wrapper">
-    <div class="section-badge">🎬 Featured Moment</div>
+    <div class="section-badge">🎬</div>
     <div class="video-container">
         <iframe src="https://www.youtube.com/embed/zy-h0Z0UmjM" 
                 title="YouTube video player" 
@@ -460,63 +749,191 @@ footer{
     </div>
 </div>
 
-<!-- Luke Section -->
-<section id="luke">
-    
-    <h2>Luke Peemsan</h2>
-    <div class="cards" style="max-width: 320px; margin: 0 auto;">
-        <div class="card">
-            <img src="Luke_pf1.jpeg" alt="Luke Peemsan" class="card-img">
-            <h3 style="margin: 15px 0 5px; color: #75566b; text-align: center;">Luke</h3>
-            <p style="margin: 0 0 12px 0; color: #86647c; font-size: 0.9rem; text-align: center;">ประวัติและผลงานเดี่ยว</p>
-            <div class="profile-socials">
-                <a href="https://www.instagram.com/lukeso_?obrf=MWxic3A4ZGJuaXV5cA==" target="_blank" class="p-btn btn-ig">IG</a>
-                <a href="https://x.com/lukepeemsan?s=21" target="_blank" class="p-btn btn-x">X</a>
-                <a href="https://www.tiktok.com/@lukesoandenzo" target="_blank" class="p-btn btn-tt">TikTok</a>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Profiles Horizontal Section -->
+<div class="profile-horizontal-container">
 
-<!-- Mick Section -->
-<section id="mick">
-    
-    <h2>Mick Metas</h2>
-    <div class="cards" style="max-width: 320px; margin: 0 auto;">
-        <div class="card">
-            <img src="Mick_pf1.jpeg" alt="Mick Methas" class="card-img">
-            <h3 style="margin: 15px 0 5px; color: #75566b; text-align: center;">Mick</h3>
-            <p style="margin: 0 0 12px 0; color: #86647c; font-size: 0.9rem; text-align: center;">ประวัติและผลงานเดี่ยว</p>
-            <div class="profile-socials">
-                <a href="https://www.instagram.com/mickmetas?obrf=MW8zYWxkMjM1NGNmOQ==" target="_blank" class="p-btn btn-ig">IG</a>
-                <a href="https://x.com/mickmetas?s=11" target="_blank" class="p-btn btn-x">X</a>
-                <a href="https://www.tiktok.com/@satemkcim" target="_blank" class="p-btn btn-tt">TikTok</a>
+    <!-- Luke Profile (Horizontal) -->
+    <section id="luke" style="padding: 15px 0;">
+        <div style="text-align: center; margin-bottom: 12px;"><div class="section-badge">🦊</div></div>
+        <div class="profile-card-horizontal">
+            <div class="profile-left-col">
+                <img src="Luke_pf1.jpeg" alt="Luke Peemsan" class="profile-img-horiz">
+                <h3 style="margin: 10px 0 2px; color: #75566b;">Luke Peemsan</h3>
+                <p style="margin: 0; color: #86647c; font-size: 0.85rem;">@lukeso_</p>
+                <div class="profile-socials">
+                    <a href="https://www.instagram.com/lukeso_?obrf=MWxic3A4ZGJuaXV5cA==" target="_blank" class="p-btn btn-ig">IG</a>
+                    <a href="https://x.com/lukepeemsan?s=21" target="_blank" class="p-btn btn-x">X</a>
+                    <a href="https://www.tiktok.com/@lukesoandenzo" target="_blank" class="p-btn btn-tt">TikTok</a>
+                </div>
+            </div>
+            <div class="profile-right-col">
+                <div class="profile-info-box">
+                    <p><strong>ชื่อ-นามสกุล:</strong> ภีมสรรค์ โสตางกูร (Peemsan Sotangkur)</p>
+                    <p><strong>ชื่อเล่น:</strong> ลูค (Luke)</p>
+                    <p><strong>วันเกิด:</strong> 15 มกราคม พ.ศ. 2547</p>
+                    <p><strong>ส่วนสูง:</strong> ประมาณ 178 ซม.</p>
+                    <p><strong>สังกัด:</strong> GMMTV</p>
+                    <p><strong>การศึกษา:</strong> คณะศิลปศาสตร์และวิทยาศาสตร์บัณฑิต สาขาวิชานวัตกรรมบูรณาการ (หลักสูตรนานาชาติ) หรือ BAScii จุฬาลงกรณ์มหาวิทยาลัย</p>
+						   <p><strong>Hastag:</strong> #lukeso_</p>
+                </div>
+                
+                <div style="font-weight: 600; font-size: 0.9rem; color: #75566b; margin-top: 4px;">ผลงานการแสดง (คลิกเพื่อดูรายละเอียด):</div>
+                
+                <div class="film-item" onclick="openModal('Summer Night ความลับในคืนฤดูร้อน', 'นักแสดงรับเชิญ', 'ซีรีส์วัยรุ่นสะท้อนมิตรภาพ ความลับ และความสัมพันธ์อันซับซ้อนของกลุ่มเพื่อนในช่วงฤดูร้อน', 'Luke_smn.jpeg')">
+                    <img src="Luke_smn.jpeg" alt="Summer Night" class="film-thumb">
+                    <div class="film-text"><strong>Summer Night ความลับในคืนฤดูร้อน</strong><br>นักแสดงรับเชิญ</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('เปิดเทอมใหม่ หัวใจหัดรัก Boys in Love', 'รับบทเป็น กิต (นักแสดงนำ)', 'เรื่องรักวุ่นๆ ของวัยรุ่นช่วงเปิดเทอมใหม่ชั้น ม.6 ที่ต้องมาตัวติดกันกับเชนแบบไม่เต็มใจ', 'Kit.BIL.jpeg')">
+                    <img src="Kit.BIL.jpeg" alt="Boys in Love" class="film-thumb">
+                    <div class="film-text"><strong>เปิดเทอมใหม่ หัวใจหัดรัก Boys in Love</strong><br>รับบทเป็น กิต (นักแสดงนำ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('Hearts in Play The Micro Series', 'รับบทเป็น เจม (นักแสดงนำ)', 'โปรเจกต์ไมโครซีรีส์สุดพิเศษที่เต็มไปด้วยเรื่องราวความสัมพันธ์และโมเมนต์ชวนใจฟู', 'Gem_htp.jpeg')">
+                    <img src="Gem_htp.jpeg" alt="Hearts in Play" class="film-thumb">
+                    <div class="film-text"><strong>'Hearts in Play' The Micro Series</strong><br>รับบทเป็น เจม (นักแสดงนำ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('Good Boy Series จิรภัทรจะเป็นเด็กดี', 'รับบทเป็น รุธ (นักแสดงนำ)', 'เรื่องราวการย้อนเวลากลับไปแก้ไขอดีตและพบกับความหมายสำคัญของชีวิตอีกครั้งในวัย 17', 'Ruth_gbs.jpeg')">
+                    <img src="Ruth_gbs.jpeg" alt="Good Boy Series" class="film-thumb">
+                    <div class="film-text"><strong>Good Boy Series จิรภัทรจะเป็นเด็กดี</strong><br>รับบทเป็น รุธ (นักแสดงนำ)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mick Profile (Horizontal) -->
+    <section id="mick" style="padding: 15px 0;">
+        <div style="text-align: center; margin-bottom: 12px;"><div class="section-badge">🐰</div></div>
+        <div class="profile-card-horizontal">
+            <div class="profile-left-col">
+                <img src="Mick_pf1.jpeg" alt="Mick Metas" class="profile-img-horiz">
+                <h3 style="margin: 10px 0 2px; color: #75566b;">Mick Metas</h3>
+                <p style="margin: 0; color: #86647c; font-size: 0.85rem;">@mickmetas</p>
+                <div class="profile-socials">
+                    <a href="https://www.instagram.com/mickmetas?obrf=MW8zYWxkMjM1NGNmOQ==" target="_blank" class="p-btn btn-ig">IG</a>
+                    <a href="https://x.com/mickmetas?s=11" target="_blank" class="p-btn btn-x">X</a>
+                    <a href="https://www.tiktok.com/@satemkcim" target="_blank" class="p-btn btn-tt">TikTok</a>
+                </div>
+            </div>
+            <div class="profile-right-col">
+                <div class="profile-info-box">
+                    <p><strong>ชื่อ-นามสกุล:</strong> เมธัส โอภาสเอี่ยมขจร (Metas Opas-iamkajorn)</p>
+                    <p><strong>ชื่อเล่น:</strong> มิค (Mick)</p>
+                    <p><strong>วันเกิด:</strong> 17 กุมภาพันธ์ พ.ศ. 2549</p>
+                    <p><strong>ส่วนสูง:</strong> ประมาณ 174 ซม.</p>
+                    <p><strong>สังกัด:</strong> GMMTV</p>
+                    <p><strong>การศึกษา:</strong> คณะบัญชีบริหาร หลักสูตรปริญญาตรีควบปริญญาโท มหาวิทยาลัยธรรมศาสตร์</p>
+						   <p><strong>Hastag:</strong> #mickmetas</p>
+                </div>
+                
+                <div style="font-weight: 600; font-size: 0.9rem; color: #75566b; margin-top: 4px;">ผลงานการแสดง (คลิกเพื่อดูรายละเอียด):</div>
+                
+                <div class="film-item" onclick="openModal('Good Old Days ร้านซื้อขายความทรงจำ', 'รับบทเป็น พีท (นักแสดงสมทบ)', 'ซีรีส์ที่ถ่ายทอดเรื่องราวผ่านสิ่งของและความทรงจำที่มีคุณค่าทางจิตใจของแต่ละตัวละคร', 'goodolddays_thumb.jpeg')">
+                    <img src="goodolddays_thumb.jpeg" alt="Good Old Days" class="film-thumb">
+                    <div class="film-text"><strong>Good Old Days ร้านซื้อขายความทรงจำ</strong><br>รับบทเป็น พีท (นักแสดงสมทบ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('Beauty Newbie หัวใจไม่มีปลอม', 'รับบทเป็น กาย (วัยเด็ก) (รับเชิญ)', 'ซีรีส์รีเมคยอดฮิตกับการเริ่มต้นชีวิตใหม่ในรั้วมหาวิทยาลัยด้วยความมั่นใจ', 'beautynewbie_thumb.jpeg')">
+                    <img src="beautynewbie_thumb.jpeg" alt="Beauty Newbie" class="film-thumb">
+                    <div class="film-text"><strong>Beauty Newbie หัวใจไม่มีปลอม</strong><br>รับบทเป็น กาย (วัยเด็ก) (รับเชิญ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('เปิดเทอมใหม่ หัวใจหัดรัก Boys in Love', 'รับบทเป็น เชน (นักแสดงนำ)', 'เรื่องรักวุ่นๆ ของวัยรุ่นช่วงเปิดเทอมใหม่ชั้น ม.6 นักเรียนดีเด่นที่ต้องมาตัวติดกับกิต', 'Shane.BIL.jpeg')">
+                    <img src="Shane.BIL.jpeg" alt="Boys in Love" class="film-thumb">
+                    <div class="film-text"><strong>เปิดเทอมใหม่ หัวใจหัดรัก Boys in Love</strong><br>รับบทเป็น เชน (นักแสดงนำ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('Hearts in Play The Micro Series', 'รับบทเป็น ไชน์ (นักแสดงนำ)', 'เรื่องราวความสัมพันธ์อันอบอุ่นหัวใจในไมโครซีรีส์ที่แฟนๆ ห้ามพลาด', 'Shine_htp.jpeg')">
+                    <img src="Shine_htp.jpeg" alt="Hearts in Play" class="film-thumb">
+                    <div class="film-text"><strong>‘Hearts in Play’ The Micro Series</strong><br>รับบทเป็น ไชน์ (นักแสดงนำ)</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('MuTeLuv Diva Deva Mata เจ้าแม่ตัวแม่', 'รับบทเป็น พี่พัด', 'ซีรีส์แนวสนุกสนานอบอุ่นหัวใจและความเชื่อสายมูเตลู', 'Pat_mtl.jpeg')">
+                    <img src="Pat_mtl.jpeg" alt="MuTeLuv" class="film-thumb">
+                    <div class="film-text"><strong>MuTeLuv Diva Deva Mata เจ้าแม่ตัวแม่</strong><br>รับบทเป็น พี่พัด</div>
+                </div>
+                
+                <div class="film-item" onclick="openModal('Good Boy Series จิรภัทรจะเป็นเด็กดี', 'รับบทเป็น จิรภัทร (นักแสดงนำ)', 'เรื่องราวของจิรภัทรในวัย 30 ที่ได้โอกาสกลับมาเริ่มต้นชีวิตใหม่ในวัย 17 อีกครั้ง', 'Jirapat_gbs.jpeg')">
+                    <img src="Jirapat_gbs.jpeg" alt="Good Boy Series" class="film-thumb">
+                    <div class="film-text"><strong>Good Boy Series จิรภัทรจะเป็นเด็กดี</strong><br>รับบทเป็น จิรภัทร (นักแสดงนำ)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Popup Modal Structure for Profiles -->
+<div id="seriesModal" class="modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <img id="modalImg" src="" alt="Series Image" class="modal-img">
+        <h3 id="modalTitle" class="modal-title"></h3>
+        <div id="modalRole" class="modal-role"></div>
+        <div id="modalDesc" class="modal-desc"></div>
+    </div>
+</div>
+
+<!-- Popup Modal Structure for Couple Series -->
+<div id="coupleModal" class="modal-overlay" onclick="closeCoupleModalOutside(event)">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeCoupleModal()">✕</button>
+        <img id="coupleModalImg" src="" alt="Couple Series Cover" class="modal-img">
+        <h3 id="coupleModalTitle" class="modal-title"></h3>
+        <div id="coupleModalSubtitle" class="modal-role" style="margin-bottom: 8px;"></div>
+        <div id="coupleModalDesc" class="modal-desc"></div>
+        
+        <div class="modal-links-container">
+            <h4 class="modal-subheading">🎬 Trailer / Teaser</h4>
+            <a id="coupleModalTeaser" href="#" target="_blank" class="btn-teaser">ชมตัวอย่างซีรีส์ (Trailer) บน YouTube</a>
+            
+            <h4 class="modal-subheading" style="margin-top: 5px;">📺 รายชื่อแต่ละตอน (Episodes)</h4>
+            <div id="coupleModalEpisodes" class="episode-list">
+                <!-- รายการตอนจะถูกเติมด้วย JavaScript -->
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Series / Couple Section -->
 <section id="couple">
     <div style="text-align: center;"><div class="section-badge">Series Projects 🦊🐰</div></div>
-    <h2>ซีรีส์</h2>
+    <h2>Couple Series</h2>
     <div class="cards">
-        <div class="card">
+        <div class="card" onclick="openCoupleModal('Boys in Love', 'เปิดเทอมใหม่หัวใจหัดรัก', 'bil_cover.jpeg', 'เรื่องรักวุ่นๆ ของวัยรุ่นช่วงเปิดเทอมใหม่ชั้น ม.6 เมื่อ <strong>“เชน” (มิค เมธัส)</strong> นักเรียนดีเด่นมากความสามารถ ทั้งเรื่องเรียนและกิจกรรม แต่กลับไม่อินกับชีวิตวัยรุ่นเลย จนมาเจอกับ <strong>“กิต” (ลูค ภีมสรรค์)</strong> เพื่อนร่วมรุ่นที่ตรงข้ามกับ “เชน” แทบทุกเรื่อง แต่แล้วก็ต้องมาตัวติดกันแบบไม่เต็มใจ<br><br>ในระหว่างที่ <strong>“คิม” (โชกุน พุทธิพงษ์)</strong> เพื่อนร่วมชั้นเดียวกัน ตกอยู่ในภาวะตกหลุมรักอยากมีแฟนก่อนจบ ม.6 จนได้มาเจอกับรักแรก <strong>“ม่อน” (แอสตัน รติภัทร)</strong> เด็กใหม่ที่พึ่งย้ายเข้ามา เลยเดินหน้าจีบเต็มกำลัง!', 'https://youtu.be/eA-2je47h1M?si=iRe65ZWAR6S_tIw5', [
+            {ep: 'EP. 2', url: 'https://youtu.be/lM0TQXofQo0?si=FHstJgTc8DDPIu4K'},
+            {ep: 'EP. 3', url: 'https://youtu.be/Cwm1WQH1iTM?si=xVRcQewXs_Wkuyz3'},
+            {ep: 'EP. 4', url: 'https://youtu.be/C8Fc6xRVoCo?si=1yo7jMVfiD2GlmLe'},
+            {ep: 'EP. 5', url: 'https://youtu.be/n94mdZ34hVk?si=DmSYMKw5vgCbNrHo'},
+            {ep: 'EP. 6', url: 'https://youtu.be/lcn6DnEFHcY?si=rvxOdHpG5RLU-Pog'},
+            {ep: 'EP. 7', url: 'https://youtu.be/23yaRSPA1AE?si=ndspCidrpMPNYaJd'},
+            {ep: 'EP. 8', url: 'https://youtu.be/67Khj3y3SSY?si=_R5mS7v5mPmwz1D4'},
+            {ep: 'EP. 9', url: 'https://youtu.be/cCED0sAGMBg?si=236JRseZPAaEgX5f'},
+            {ep: 'EP. 10', url: 'https://youtu.be/sddF_s0fFlU?si=66Er9LBcuITGSz7R'},
+            {ep: 'EP. 11', url: 'https://youtu.be/1MGG_XtDu2E?si=SGUkdSLFU5eiKE2Z'},
+            {ep: 'EP. 12', url: 'https://youtu.be/62ViuR7v2ko?si=8EJOTfk_hGwga5dB'}
+        ])">
             <img src="bil_cover.jpeg" alt="Boys in Love" class="card-img">
             <h3 style="margin: 15px 0 5px; color: #75566b;">Boys in Love</h3>
             <p style="margin: 0; color: #86647c; font-size: 0.9rem; font-weight: 600;">เปิดเทอมใหม่หัวใจหัดรัก</p>
             <div class="series-desc">
-                เรื่องรักวุ่นๆ ของวัยรุ่นช่วงเปิดเทอมใหม่ชั้น ม.6 เมื่อ <strong>“เชน” (มิค เมธัส)</strong> นักเรียนดีเด่นมากความสามารถ ทั้งเรื่องเรียนและกิจกรรม แต่กลับไม่อินกับชีวิตวัยรุ่นเลย จนมาเจอกับ <strong>“กิต" (ลูค ภีมสรรค์)</strong> เพื่อนร่วมรุ่นที่ตรงข้ามกับ “เชน” แทบทุกเรื่อง แต่แล้วก็ต้องมาตัวติดกันแบบไม่เต็มใจ<br><br>
-ในระหว่างที่ <strong>“คิม” (โชกุน พุทธิพงษ์)</strong> เพื่อนร่วมชั้นเดียวกัน ตกอยู่ในภาวะตกหลุมรักอยากมีแฟนก่อนจบ ม.6 จนได้มาเจอกับรักแรก <strong>“ม่อน" (แอสตัน รติภัทร)</strong> เด็กใหม่ที่พึ่งย้ายเข้ามา เลยเดินหน้าจีบเต็มกำลัง!
+                เรื่องรักวุ่นๆ ของวัยรุ่นช่วงเปิดเทอมใหม่ชั้น ม.6 เมื่อ <strong>“เชน” (มิค เมธัส)</strong> นักเรียนดีเด่นมากความสามารถ ทั้งเรื่องเรียนและกิจกรรม... <br><span style="color: #a16e91; font-weight: 600; font-size: 0.82rem;">👉 คลิกเพื่อดูรายละเอียด Trailer และลิงก์แต่ละตอน</span>
             </div>
         </div>
-        <div class="card">
+
+        <div class="card" onclick="openCoupleModal('Good Boy Series', 'จิรภัทรจะเป็นเด็กดี', 'Goodboy_cover.jpeg', 'เรื่องราวของ <strong>“จิรภัทร” (มิค เมธัส)</strong> วัย 30 ปีที่จากไปพร้อมความเสียดาย ได้รับโอกาสให้กลับมาเริ่มต้นชีวิตใหม่ในวัย 17 อีกครั้ง เขาจึงตั้งใจจะใช้โอกาสครั้งที่สองนี้ เปลี่ยนชีวิตที่เคยผิดพลาด และใช้ชีวิตให้ดีขึ้นกว่าเดิม<br><br>แต่การกลับมาครั้งนี้ทำให้เขาได้ใกล้ชิดกับ <strong>“รุธ อติวิชญ์” (ลูค ภีมสรรค์)</strong> ประธานนักเรียนเพื่อนในวัยเด็กที่เขาเคยหลงลืม ความสัมพันธ์ที่ค่อยๆ ใกล้ชิดขึ้น ทำให้ชีวิตครั้งที่สองของจิรภัทรไม่ได้มีเพียงเรื่องของการแก้ไขอดีต แต่ยังเป็นการกลับมารู้จักใครบางคนที่อาจกลายเป็นความหมายสำคัญของชีวิตอีกครั้ง', 'https://youtu.be/CZ2prjmK9tc?si=-lyuLz2gJXhnhaNl', [
+            {ep: 'EP. 2', url: 'https://youtu.be/3z8SZrpdbvM?si=Q5BsmtnOMYwE259X'},
+            {ep: 'EP. 3', url: 'https://youtu.be/zcfli4SuF2I?si=63jA4bM6HjIOcD5y'},
+            {ep: 'EP. 4', url: 'https://youtu.be/f_Ad6qovyWQ?si=qTkSxtxyzWGlZhYg'},
+            {ep: 'EP. 5', url: 'https://youtu.be/bAJ9uiYdH08?si=CPhZ8HjhJjahTRzf'},
+            {ep: 'EP. 6', url: 'https://youtu.be/jUaNy_IDVug?si=SpGBDLdryHRcCoqu'}
+        ])">
             <img src="Goodboy_cover.jpeg" alt="Good Boy Series" class="card-img">
             <h3 style="margin: 15px 0 5px; color: #75566b;">Good Boy Series</h3>
             <p style="margin: 0; color: #86647c; font-size: 0.9rem; font-weight: 600;">จิรภัทรจะเป็นเด็กดี</p>
             <div class="series-desc">
-                เรื่องราวของ <strong>“จิรภัทร” (มิค เมธัส)</strong> วัย 30 ปีที่จากไปพร้อมความเสียดาย ได้รับโอกาสให้กลับมาเริ่มต้นชีวิตใหม่ในวัย 17 อีกครั้ง เขาจึงตั้งใจจะใช้โอกาสครั้งที่สองนี้ เปลี่ยนชีวิตที่เคยผิดพลาด และใช้ชีวิตให้ดีขึ้นกว่าเดิม<br><br>
-แต่การกลับมาครั้งนี้ทำให้เขาได้ใกล้ชิดกับ <strong>“รุธ อติวิชญ์” (ลูค ภีมสรรค์)</strong> ประธานนักเรียนเพื่อนในวัยเด็กที่เขาเคยหลงลืม ความสัมพันธ์ที่ค่อยๆ ใกล้ชิดขึ้น ทำให้ชีวิตครั้งที่สองของจิรภัทรไม่ได้มีเพียงเรื่องของการแก้ไขอดีต แต่ยังเป็นการกลับมารู้จักใครบางคนที่อาจกลายเป็นความหมายสำคัญของชีวิตอีกครั้ง แล้ว “จิรภัทร” ในวัย 17 จะเลือกใช้ชีวิตครั้งที่สองนี้อย่างไร มาร่วมเอาใจช่วยไปพร้อมๆ กัน
+                เรื่องราวของ <strong>“จิรภัทร” (มิค เมธัส)</strong> วัย 30 ปีที่จากไปพร้อมความเสียดาย ได้รับโอกาสให้กลับมาเริ่มต้นชีวิตใหม่ในวัย 17 อีกครั้ง... <br><span style="color: #a16e91; font-weight: 600; font-size: 0.82rem;">👉 คลิกเพื่อดูรายละเอียด Trailer และลิงก์แต่ละตอน</span>
             </div>
         </div>
     </div>
@@ -556,7 +973,7 @@ footer{
             <div class="platform-links">
                 <a href="https://youtu.be/SifYD5w4sw4?si=rZsnOAcQtSoakB93" target="_blank" class="btn btn-yt">YouTube</a>
                 <a href="https://open.spotify.com/track/6Qot9aMAQzzQi7YtXR46XU?si=n7StQYq5TMiXvAECCPQA_Q&utm_source=copy-link" target="_blank" class="btn btn-spotify">Spotify</a>
-                <a href="https://music.apple.com/th/song/%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A7-%E0%B8%87%E0%B8%97-%E0%B8%AA%E0%B8%AD%E0%B8%87-rehope-%E0%B9%80%E0%B9%8E%E0%B8%9E%E0%B8%A5%E0%B8%87%E0%B8%9B%E0%B8%AD%E0%B8%9A%E0%B8%8B-%E0%B8%A3-%E0%B8%AA-%E0%B8%8-%E0%B8%A0-%E0%B8%97%E0%B8%A3%E0%B8%88%E0%B8%B0%E0%B9%80%E0%B8%9B-%E0%B9%80%E0%B9%80%E0%B8%94%E0%B8%A1/6828741911" target="_blank" class="btn btn-apple">Apple Music</a>
+                <a href="https://music.apple.com/th/song/%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A7-%E0%B8%8g%E0%B8%97-%E0%B8%AA%E0%B8%AD%E0%B8%87-rehope-%E0%B9%80%E0%B9%8E%E0%B8%9E%E0%B8%A5%E0%B8%87%E0%B8%9B%E0%B8%AD%E0%B8%9A%E0%B8%8B-%E0%B8%A3-%E0%B8%AA-%E0%B8%8-%E0%B8%A0-%E0%B8%97%E0%B8%A3%E0%B8%88%E0%B8%B0%E0%B9%80%E0%B8%9B-%E0%B9%80%E0%B9%80%E0%B8%94%E0%B8%A1/6828741911" target="_blank" class="btn btn-apple">Apple Music</a>
             </div>
         </div>
     </div>
@@ -573,7 +990,7 @@ footer{
             <div class="contact-links-list">
                 <a href="https://www.instagram.com/lukeso_?obrf=MWxic3A4ZGJuaXV5cA==" target="_blank" class="contact-item">
                     <span>📸 Instagram</span>
-                    <span style="color: #86647c; font-size: 0.8rem;">@Lukeso_</span>
+                    <span style="color: #86647c; font-size: 0.8rem;">@lukeso_</span>
                 </a>
                 <a href="https://x.com/lukepeemsan?s=21" target="_blank" class="contact-item">
                     <span>🐦 X (Twitter)</span>
@@ -581,7 +998,7 @@ footer{
                 </a>
                 <a href="https://www.tiktok.com/@lukesoandenzo" target="_blank" class="contact-item">
                     <span>🎬 TikTok</span>
-                    <span style="color: #86647c; font-size: 0.8rem;">@Lukesoandenzo</span>
+                    <span style="color: #86647c; font-size: 0.8rem;">@lukesoandenzo</span>
                 </a>
             </div>
         </div>
@@ -592,15 +1009,15 @@ footer{
             <div class="contact-links-list">
                 <a href="https://www.instagram.com/mickmetas?obrf=MW8zYWxkMjM1NGNmOQ==" target="_blank" class="contact-item">
                     <span>📸 Instagram</span>
-                    <span style="color: #86647c; font-size: 0.8rem;">@Mickmetas</span>
+                    <span style="color: #86647c; font-size: 0.8rem;">@mickmetas</span>
                 </a>
                 <a href="https://x.com/mickmetas?s=11" target="_blank" class="contact-item">
                     <span>🐦 X (Twitter)</span>
-                    <span style="color: #86647c; font-size: 0.8rem;">@Mickmetas</span>
+                    <span style="color: #86647c; font-size: 0.8rem;">@mickmetas</span>
                 </a>
                 <a href="https://www.tiktok.com/@satemkcim" target="_blank" class="contact-item">
                     <span>🎬 TikTok</span>
-                    <span style="color: #86647c; font-size: 0.8rem;">@Satemkcim</span>
+                    <span style="color: #86647c; font-size: 0.8rem;">@satemkcim</span>
                 </a>
             </div>
         </div>
@@ -611,8 +1028,68 @@ footer{
     LukeMick © 2026 🤍 All Rights Reserved
 </footer>
 
-<!-- JavaScript for Random Falling Emojis Rain Effect -->
+<!-- JavaScript for Popup Modals & Falling Emojis Rain Effect -->
 <script>
+// Popup Modal Functions (Profiles / Filmography)
+function openModal(title, role, desc, imgSrc) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalRole').innerText = role;
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('modalImg').src = imgSrc;
+    document.getElementById('seriesModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('seriesModal').classList.remove('active');
+}
+
+function closeModalOutside(event) {
+    if (event.target.id === 'seriesModal') {
+        closeModal();
+    }
+}
+
+// Popup Modal Functions (Couple Series)
+function openCoupleModal(title, subtitle, imgSrc, desc, teaserUrl, episodes) {
+    document.getElementById('coupleModalTitle').innerText = title;
+    document.getElementById('coupleModalSubtitle').innerText = subtitle;
+    document.getElementById('coupleModalImg').src = imgSrc;
+    document.getElementById('coupleModalDesc').innerHTML = desc;
+    
+    // ตั้งค่าลิงก์ Trailer
+    document.getElementById('coupleModalTeaser').href = teaserUrl;
+    
+    // สร้างรายการลิงก์แต่ละตอน
+    const epContainer = document.getElementById('coupleModalEpisodes');
+    epContainer.innerHTML = '';
+    
+    if (episodes && episodes.length > 0) {
+        episodes.forEach(item => {
+            const a = document.createElement('a');
+            a.href = item.url;
+            a.target = '_blank';
+            a.className = 'ep-item';
+            a.innerHTML = `<span>📺 ${item.ep}</span> <span style="font-size: 0.78rem; color: #86647c;">รับชมตอนนี้ ↗</span>`;
+            epContainer.appendChild(a);
+        });
+    } else {
+        epContainer.innerHTML = '<div style="font-size: 0.85rem; color: #86647c; text-align: center; padding: 10px;">เร็วๆ นี้</div>';
+    }
+    
+    document.getElementById('coupleModal').classList.add('active');
+}
+
+function closeCoupleModal() {
+    document.getElementById('coupleModal').classList.remove('active');
+}
+
+function closeCoupleModalOutside(event) {
+    if (event.target.id === 'coupleModal') {
+        closeCoupleModal();
+    }
+}
+
+// Falling Emojis Rain Effect
 const emojis = ['🦊', '🐰', '✨', '💖', '🐾'];
 const rainContainer = document.getElementById('rain-container');
 
@@ -620,34 +1097,25 @@ function createRaindrop() {
     const drop = document.createElement('div');
     drop.classList.add('raindrop');
     
-    // สุ่มอีโมจิ
     drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    
-    // สุ่มตำแหน่งแนวนอน (0% ถึง 100%)
     drop.style.left = Math.random() * 100 + 'vw';
     
-    // สุ่มขนาด (เล็ก ใหญ่ ต่างกันไป)
-    const size = Math.random() * 14 + 12; // 12px ถึง 26px
+    const size = Math.random() * 14 + 12;
     drop.style.fontSize = size + 'px';
     
-    // สุ่มความเร็วในการตก (3 วินาที ถึง 7 วินาที)
     const fallDuration = Math.random() * 4 + 3;
     const swayDuration = Math.random() * 2 + 2;
     
     drop.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
-    
-    // สุ่มความโปร่งใส
     drop.style.opacity = Math.random() * 0.5 + 0.3;
     
     rainContainer.appendChild(drop);
     
-    // ลบ element ทิ้งเมื่อตกลงมาถึงข้างล่างสุด เพื่อไม่ให้หน่วยความจำเต็ม
     setTimeout(() => {
         drop.remove();
     }, fallDuration * 1000);
 }
 
-// สร้างฝนตกลงมาเรื่อยๆ ทุกๆ 300 มิลลิวินาที
 setInterval(createRaindrop, 300);
 </script>
 
