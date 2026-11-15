@@ -35,6 +35,27 @@ body{
  background: #ef4444;
 }
 
+/* --- เอฟเฟกต์คลิกเมาส์กระจาย (Mouse Click Burst Effect) --- */
+.click-effect-particle {
+ position: fixed;
+ pointer-events: none;
+ font-size: 1.2rem;
+ user-select: none;
+ z-index: 99999;
+ animation: particleBurst 0.6s ease-out forwards;
+}
+
+@keyframes particleBurst {
+ 0% {
+  transform: translate(0, 0) scale(1) rotate(0deg);
+  opacity: 1;
+ }
+ 100% {
+  transform: translate(var(--dx), var(--dy)) scale(0.4) rotate(var(--drot));
+  opacity: 0;
+ }
+}
+
 /* --- พื้นหลังดุ๊กดิ๊กๆ (Floating & Wiggle Elements) --- */
 .floating-bg-container {
  position: absolute;
@@ -1399,7 +1420,7 @@ footer{
                 <img src="Missing_piece_lm.jpeg" alt="Missing Piece Cover" class="card-img">
             </div>
             <div class="music-meta">
-                <h3>เติมเต็ม (MISSING PIECE) – เพลงประกอบซีรีส์ เปิดเทอมใหม่ หัวใจหัดรัก Boys in Love</h3>
+                <h3>เติมเต็ม (MISSING PIECE)</h3>
                 <p>LukePeemsan, MickMetas</p>
             </div>
             <div class="music-desc">
@@ -1428,7 +1449,7 @@ footer{
                 <img src="Loveday_lm.jpeg" alt="Love Day Cover" class="card-img">
             </div>
             <div class="music-meta">
-                <h3>รักเลยตอนนี้ (Love Day) – เพลงประกอบซีรีส์ จิรภัทรจะเป็นเด็กดี Good Boy Series</h3>
+                <h3>รักเลยตอนนี้ (Love Day)</h3>
                 <p>LukePeemsan, MickMetas</p>
             </div>
             <div class="music-desc">
@@ -1457,7 +1478,7 @@ footer{
                 <img src="Rehope_luke.jpeg" alt="Rehope Cover" class="card-img">
             </div>
             <div class="music-meta">
-                <h3>ความหวังที่สอง (REHOPE) – เพลงประกอบซีรีส์ จิรภัทรจะเป็นเด็กดี Good Boy Series</h3>
+                <h3>ความหวังที่สอง (REHOPE)</h3>
                 <p>LukePeemsan</p>
             </div>
             <div class="music-desc">
@@ -1486,7 +1507,7 @@ footer{
                 <img src="Last_memory_mick.jpeg" alt="Last Memory Cover" class="card-img">
             </div>
             <div class="music-meta">
-                <h3>อยากจดจำใครสักคน (Last Memory) – เพลงประกอบซีรีส์ จิรภัทรจะเป็นเด็กดี Good Boy Series</h3>
+                <h3>อยากจดจำใครสักคน (Last Memory)</h3>
                 <p>MickMetas</p>
             </div>
             <div class="music-desc">
@@ -1815,6 +1836,39 @@ function createRaindrop() {
 }
 
 setInterval(createRaindrop, 400);
+
+/* --- Mouse Click Effect Script --- */
+const clickSymbols = ['💖', '✨', '⭐', '🦊', '🐰', '💫'];
+window.addEventListener('click', (e) => {
+    // สร้างอนุภาค 5 ชิ้นต่อการคลิก 1 ครั้ง
+    for (let i = 0; i < 5; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'click-effect-particle';
+        particle.innerText = clickSymbols[Math.floor(Math.random() * clickSymbols.length)];
+        
+        // กำหนดตำแหน่งเริ่มต้นที่จุดคลิกเมาส์
+        particle.style.left = `${e.clientX}px`;
+        particle.style.top = `${e.clientY}px`;
+        
+        // สุ่มทิศทางการกระจายตัว
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 60 + 30;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        const drot = (Math.random() - 0.5) * 360;
+        
+        particle.style.setProperty('--dx', `${dx}px`);
+        particle.style.setProperty('--dy', `${dy}px`);
+        particle.style.setProperty('--drot', `${drot}deg`);
+        
+        document.body.appendChild(particle);
+        
+        // ลบ element ทิ้งหลังอนิเมชันเล่นจบ
+        setTimeout(() => {
+            particle.remove();
+        }, 600);
+    }
+});
 </script>
 
 </body>
